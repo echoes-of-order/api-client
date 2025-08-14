@@ -1,4 +1,4 @@
-# @wot/api-client
+# @Addon24/api-client.git
 
 Eine geteilte HTTP-Client-Bibliothek für alle WorldOfTextcraft-Projekte.
 

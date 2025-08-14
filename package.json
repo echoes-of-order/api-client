@@ -1,10 +1,10 @@
 {
-  "name": "@habibiblocxberg/api-client",
+  "name": "@Addon24/api-client.git",
   "version": "2.1.0",
   "description": "Shared API client for WorldOfTextcraft projects",
   "repository": {
     "type": "git",
-    "url": "git://github.com/HabibiBlocxberg/api-client.git"
+    "url": "git://github.com/Addon24/api-client.git"
   },
   "publishConfig": {
     "access": "public"
