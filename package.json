@@ -1,13 +1,14 @@
 {
-  "name": "@Addon24/api-client.git",
-  "version": "2.1.0",
+  "name": "@addon24/api-client",
+  "version": "2.3.0",
   "description": "Shared API client for WorldOfTextcraft projects",
   "repository": {
     "type": "git",
-    "url": "git://github.com/Addon24/api-client.git"
+    "url": "git+https://github.com/Addon24/api-client.git"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
   },
   "main": "dist/index.js",
   "module": "dist/index.js",
