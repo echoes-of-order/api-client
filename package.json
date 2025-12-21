@@ -1,10 +1,10 @@
 {
   "name": "@echoes-of-order/api-client",
   "version": "2.3.0",
-  "description": "Shared API client for WorldOfTextcraft projects",
+  "description": "Shared API client for Echoes of Order projects",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Addon24/api-client.git"
+    "url": "git+https://github.com/echoes-of-order/api-client.git"
   },
   "publishConfig": {
     "access": "public",
@@ -35,9 +35,9 @@
     "api",
     "client",
     "http",
-    "worldoftextcraft"
+    "echoes-of-order"
   ],
-  "author": "WorldOfTextcraft Team",
+  "author": "Echoes of Order Team",
   "license": "MIT",
   "files": [
     "dist",

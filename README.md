@@ -1,28 +1,28 @@
-# @Addon24/api-client.git
+# @echoes-of-order/api-client
 
-Eine geteilte HTTP-Client-Bibliothek für alle WorldOfTextcraft-Projekte.
+Eine geteilte HTTP-Client-Bibliothek für alle Echoes of Order-Projekte.
 
 ## Installation
 
 ```bash
 # Lokal installieren (entwicklung)
-cd shared-libs/wot-api-client
+cd external-repos/api-client
 yarn build
 cd ../../frontend  # oder backend/admin
-yarn add file:../shared-libs/wot-api-client
+yarn add file:../shared-libs/eoo-api-client
 
 # Oder über privates NPM-Registry (produktion)
-yarn add @wot/api-client
+yarn add @eoo/api-client
 ```
 
 ## Verwendung
 
 ```typescript
-import { ApiClient, ApiMethods } from '@wot/api-client';
+import { ApiClient, ApiMethods } from '@eoo/api-client';
 
 // Client initialisieren
 const apiClient = new ApiClient({
-  baseUrl: 'http://api.wot.local',
+  baseUrl: 'http://api.eoo.local',
   timeout: 5000,
   defaultHeaders: {
     'X-API-Version': '1.0'
@@ -109,9 +109,9 @@ interface ApiResponse<T> {
 import api from './utilities/Api';
 const data = await api.get('/users');
 
-// Nachher  
-import { ApiClient } from '@wot/api-client';
-const apiClient = new ApiClient({ baseUrl: 'http://api.wot.local' });
+// Nachher
+import { ApiClient } from '@eoo/api-client';
+const apiClient = new ApiClient({ baseUrl: 'http://api.eoo.local' });
 const data = await apiClient.get('/users');
 ```
 
@@ -143,4 +143,4 @@ yarn version patch  # oder minor/major
 # Build und publish
 yarn build
 yarn publish
-``` 
+```
