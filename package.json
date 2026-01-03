@@ -22,16 +22,10 @@
   },
   "scripts": {
     "build": "tsc",
-    "dev": "tsc --watch",
     "test": "vitest run",
+    "test:cov": "vitest run --coverage",
     "lint": "eslint src"
   },
-  "keywords": [
-    "api",
-    "client",
-    "http",
-    "echoes-of-order"
-  ],
   "author": "Echoes of Order Team",
   "license": "MIT",
   "files": [
@@ -52,9 +46,6 @@
     "semantic-release": "^25.0.2",
     "typescript": "^5.0.0",
     "vitest": "^1.0.0"
-  },
-  "peerDependencies": {
-    "typescript": ">=4.5.0"
   },
   "engines": {
     "node": ">=24.12.0",
