@@ -2,12 +2,14 @@ name: Publish
 
 on:
   push:
-    tags:
-      - 'v*'
+    branches:
+      - master
 
 permissions:
-  id-token: write
-  contents: read
+  contents: write      # semantic-release muss Tags & Releases erstellen
+  id-token: write      # für npm Trusted Publishing (OIDC)
+  issues: write        # optional, für GitHub Releases
+  pull-requests: write # optional, für Release Notes
 
 jobs:
   test:
@@ -18,28 +20,29 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'yarn'
+          cache: yarn
 
       - run: yarn install --frozen-lockfile
-
       - run: yarn lint
       - run: yarn test:run
       - run: yarn build
 
-  publish:
+  release:
     needs: test
     runs-on: ubuntu-latest
     environment: production
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # WICHTIG: semantic-release braucht die komplette Git-History
 
       - uses: actions/setup-node@v4
         with:
           node-version: 20
           registry-url: https://registry.npmjs.org/
-          cache: 'yarn'
+          cache: yarn
 
       - run: yarn install --frozen-lockfile
       - run: yarn build
 
-      - run: npm publish --access public
+      - run: npx semantic-release
