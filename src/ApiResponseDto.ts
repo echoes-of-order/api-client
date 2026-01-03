@@ -36,17 +36,12 @@ export class ApiResponseDto<T = unknown> {
   /**
    * Gibt die Daten zurück, falls verfügbar
    */
-  public getData(): T | undefined;
-  /**
-   * Gibt die Daten zurück, garantiert nicht-undefined bei erfolgreichen Responses
-   * Verwenden Sie nur nach vorheriger isSuccess() Prüfung!
-   */
-  public getData(successCheck: true): T;
-  public getData(successCheck?: true): T | undefined {
-    if (successCheck === true && !this._success) {
-      throw new Error('Cannot call getData(true) on unsuccessful response');
+  public getData(): T {
+    if (!this._success) {
+      throw new Error('Cannot call getData() on unsuccessful response');
     }
-    return this._data;
+    
+    return this._data as T;
   }
 
   /**
@@ -75,13 +70,5 @@ export class ApiResponseDto<T = unknown> {
    */
   public static error<T = unknown>(message: string): ApiResponseDto<T> {
     return new ApiResponseDto<T>(false, undefined, message);
-  }
-
-  /**
-   * Type-Guard: Prüft ob Response erfolgreich ist
-   * Nach dieser Prüfung ist getData() garantiert nicht undefined
-   */
-  public static isSuccessResponse<T>(response: ApiResponseDto<T>): response is ApiResponseDto<T> {
-    return response.isSuccess();
   }
 }
