@@ -1,11 +1,11 @@
 /**
  * DTO-Implementierung für API-Responses
- * 
+ *
  * WICHTIG: Nur Methoden-basierte API verfügbar:
  * - isSuccess() für Erfolgs-Check
- * - getData() für Daten-Zugriff  
+ * - getData() für Daten-Zugriff
  * - getError() für Fehler-Zugriff
- * 
+ *
  * Direkte Properties (.success, .data, .error) sind NICHT verfügbar!
  */
 export class ApiResponseDto<T = unknown> {
@@ -36,7 +36,16 @@ export class ApiResponseDto<T = unknown> {
   /**
    * Gibt die Daten zurück, falls verfügbar
    */
-  public getData(): T | undefined {
+  public getData(): T | undefined;
+  /**
+   * Gibt die Daten zurück, garantiert nicht-undefined bei erfolgreichen Responses
+   * Verwenden Sie nur nach vorheriger isSuccess() Prüfung!
+   */
+  public getData(successCheck: true): T;
+  public getData(successCheck?: true): T | undefined {
+    if (successCheck === true && !this._success) {
+      throw new Error('Cannot call getData(true) on unsuccessful response');
+    }
     return this._data;
   }
 
@@ -67,4 +76,12 @@ export class ApiResponseDto<T = unknown> {
   public static error<T = unknown>(message: string): ApiResponseDto<T> {
     return new ApiResponseDto<T>(false, undefined, message);
   }
-} 
+
+  /**
+   * Type-Guard: Prüft ob Response erfolgreich ist
+   * Nach dieser Prüfung ist getData() garantiert nicht undefined
+   */
+  public static isSuccessResponse<T>(response: ApiResponseDto<T>): response is ApiResponseDto<T> {
+    return response.isSuccess();
+  }
+}

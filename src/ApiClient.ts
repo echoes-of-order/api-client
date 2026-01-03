@@ -1,5 +1,5 @@
 import { ApiResponseDto } from './ApiResponseDto';
-import { ApiClientConfig, RequestConfig } from './types';
+import { ApiClientConfig, RequestConfig, RequestDto } from './types';
 
 export enum ApiMethods {
   GET = "GET",
@@ -54,24 +54,24 @@ export class ApiClient {
   }
 
   public async post<T> (
-    url: string, 
-    data?: unknown, 
+    url: string,
+    data?: RequestDto | Record<string, unknown>,
     config: RequestConfig = {}
   ): Promise<ApiResponseDto<T>> {
     return this.request<T>(url, ApiMethods.POST, data, config);
   }
 
   public async put<T> (
-    url: string, 
-    data?: unknown, 
+    url: string,
+    data?: RequestDto | Record<string, unknown>,
     config: RequestConfig = {}
   ): Promise<ApiResponseDto<T>> {
     return this.request<T>(url, ApiMethods.PUT, data, config);
   }
 
   public async patch<T> (
-    url: string, 
-    data?: unknown, 
+    url: string,
+    data?: RequestDto | Record<string, unknown>,
     config: RequestConfig = {}
   ): Promise<ApiResponseDto<T>> {
     return this.request<T>(url, ApiMethods.PATCH, data, config);
@@ -87,7 +87,7 @@ export class ApiClient {
   private async request<T> (
     url: string,
     method: ApiMethods,
-    data?: unknown,
+    data?: RequestDto | Record<string, unknown>,
     config: RequestConfig = {}
   ): Promise<ApiResponseDto<T>> {
 
@@ -211,6 +211,24 @@ export class ApiClient {
 
     return new ApiError(message, response.status, code);
   }
+}
+
+// Type Guards for RequestDto validation
+export function isRequestDto(data: unknown): data is RequestDto {
+  // Basic validation: must be an object and not null
+  if (!data || typeof data !== 'object') {
+    return false;
+  }
+
+  // If it's a plain object (Record<string, unknown>), it's valid
+  if (data.constructor === Object) {
+    return true;
+  }
+
+  // For typed objects, we trust TypeScript's type system
+  // This is a basic type guard - more specific validation would require
+  // individual DTO validators for each RequestDto type
+  return true;
 }
 
 export class ApiError extends Error {

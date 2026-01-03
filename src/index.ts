@@ -5,4 +5,5 @@ export { HttpMethod } from './types';
 export type { ApiClientConfig, RequestConfig, ApiResponse as IApiResponse, ApiError, KeyValuePair } from './types';
 export type { Result } from './Result';
 export { ok, err, isErr, isOk } from './Result';
+export * from './dto';
 export { ApiClient as default } from './ApiClient'; 

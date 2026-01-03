@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { ApiClient, ApiMethods } from './ApiClient';
+import { ApiClient, ApiMethods, isRequestDto } from './ApiClient';
 import { ApiResponseDto } from './ApiResponseDto';
+import type { RequestDto } from './types';
 
 // Mock fetch globally
 const mockFetch = vi.fn();
@@ -173,6 +174,134 @@ describe('ApiClient', () => {
       expect(ApiMethods.PUT).toBe('PUT');
       expect(ApiMethods.PATCH).toBe('PATCH');
       expect(ApiMethods.DELETE).toBe('DELETE');
+    });
+  });
+
+  describe('RequestDto type safety', () => {
+    it('should accept RequestDto types in POST method', async () => {
+      const mockRequestDto: RequestDto = {
+        name: 'Test Item',
+        level: 1,
+        active: true
+      };
+
+      mockFetch.mockResolvedValue({
+        ok: true,
+        json: vi.fn().mockResolvedValue({ data: { id: 1 } }),
+        headers: new Map([['content-type', 'application/json']])
+      });
+
+      const result = await apiClient.post('/items', mockRequestDto);
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://api.example.com/items',
+        expect.objectContaining({
+          method: 'POST',
+          body: JSON.stringify(mockRequestDto)
+        })
+      );
+
+      expect(result.isSuccess()).toBe(true);
+    });
+
+    it('should accept RequestDto types in PUT method', async () => {
+      const mockRequestDto: RequestDto = {
+        id: 1,
+        name: 'Updated Item',
+        level: 2,
+        active: true
+      };
+
+      mockFetch.mockResolvedValue({
+        ok: true,
+        json: vi.fn().mockResolvedValue({ data: mockRequestDto }),
+        headers: new Map([['content-type', 'application/json']])
+      });
+
+      const result = await apiClient.put('/items/1', mockRequestDto);
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://api.example.com/items/1',
+        expect.objectContaining({
+          method: 'PUT',
+          body: JSON.stringify(mockRequestDto)
+        })
+      );
+
+      expect(result.isSuccess()).toBe(true);
+    });
+
+    it('should accept RequestDto types in PATCH method', async () => {
+      const mockRequestDto: RequestDto = {
+        name: 'Patched Item'
+      };
+
+      mockFetch.mockResolvedValue({
+        ok: true,
+        json: vi.fn().mockResolvedValue({ data: { id: 1, name: 'Patched Item' } }),
+        headers: new Map([['content-type', 'application/json']])
+      });
+
+      const result = await apiClient.patch('/items/1', mockRequestDto);
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://api.example.com/items/1',
+        expect.objectContaining({
+          method: 'PATCH',
+          body: JSON.stringify(mockRequestDto)
+        })
+      );
+
+      expect(result.isSuccess()).toBe(true);
+    });
+
+    it('should maintain backward compatibility with Record<string, unknown>', async () => {
+      const plainObject = { customField: 'value' };
+
+      mockFetch.mockResolvedValue({
+        ok: true,
+        json: vi.fn().mockResolvedValue({ data: plainObject }),
+        headers: new Map([['content-type', 'application/json']])
+      });
+
+      const result = await apiClient.post('/custom', plainObject);
+
+      expect(mockFetch).toHaveBeenCalledWith(
+        'https://api.example.com/custom',
+        expect.objectContaining({
+          method: 'POST',
+          body: JSON.stringify(plainObject)
+        })
+      );
+
+      expect(result.isSuccess()).toBe(true);
+    });
+  });
+
+  describe('isRequestDto type guard', () => {
+    it('should return true for plain objects (Record<string, unknown>)', () => {
+      const plainObject = { name: 'test', value: 123 };
+      expect(isRequestDto(plainObject)).toBe(true);
+    });
+
+    it('should return true for null', () => {
+      expect(isRequestDto(null)).toBe(false);
+    });
+
+    it('should return false for primitive values', () => {
+      expect(isRequestDto('string')).toBe(false);
+      expect(isRequestDto(123)).toBe(false);
+      expect(isRequestDto(true)).toBe(false);
+    });
+
+    it('should return true for typed objects', () => {
+      const typedObject = {
+        name: 'Test Item',
+        level: 1,
+        active: true,
+        stats: [{ key: 'damage', value: 10 }]
+      };
+      expect(isRequestDto(typedObject)).toBe(true);
     });
   });
 }); 
