@@ -37,7 +37,6 @@ export interface KeyValuePair {
   value: string;
 }
 
-// RequestDto Union Type for type-safe API client usage
 export type RequestDto =
   // Item DTOs
   | import('./dto/request/admin').CreateItemRequestDto
@@ -81,4 +80,4 @@ export type RequestDto =
   | import('./dto/request/admin').ItemRequestDto
 
   // Fallback for backward compatibility and custom DTOs
-  | Record<string, unknown>; 
+  | Record<string, unknown>;
