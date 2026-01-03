@@ -3,4 +3,4 @@ dist
 package-lock.json
 .idea
 yarn.lock
-#.npmrc
+.npmrc
