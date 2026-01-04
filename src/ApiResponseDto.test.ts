@@ -178,7 +178,12 @@ describe('ApiResponseDto', () => {
       const retrievedArray = response.getData();
       expect(Array.isArray(retrievedArray)).toBe(true);
       expect(retrievedArray).toHaveLength(3);
-      expect(retrievedArray[0].id).toBe(1);
+
+      const firstElement = retrievedArray[0];
+      expect(firstElement).toBeDefined();
+      if (firstElement) {
+        expect(firstElement.id).toBe(1);
+      }
     });
   });
 
