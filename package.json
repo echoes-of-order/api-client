@@ -7,7 +7,7 @@
     "url": "git+https://github.com/echoes-of-order/api-client.git"
   },
   "publishConfig": {
-    "access": "private",
+    "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
   "main": "dist/index.js",
