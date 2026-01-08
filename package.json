@@ -1,6 +1,6 @@
 {
   "name": "@echoes-of-order/api-client",
-  "version": "3.3.0",
+  "version": "3.1.1",
   "description": "Shared API client for Echoes of Order projects",
   "repository": {
     "type": "git",
@@ -22,10 +22,16 @@
   },
   "scripts": {
     "build": "tsc",
+    "dev": "tsc --watch",
     "test": "vitest run",
-    "test:cov": "vitest run --coverage",
     "lint": "eslint src"
   },
+  "keywords": [
+    "api",
+    "client",
+    "http",
+    "echoes-of-order"
+  ],
   "author": "Echoes of Order Team",
   "license": "MIT",
   "files": [
@@ -40,16 +46,19 @@
     "@semantic-release/npm": "^13.1.3",
     "@semantic-release/release-notes-generator": "^14.1.0",
     "@types/node": "^24.0.0",
-    "@typescript-eslint/eslint-plugin": "^8.51.0",
-    "@typescript-eslint/parser": "^8.51.0",
-    "eslint": "^9.39.2",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
     "semantic-release": "^25.0.2",
     "typescript": "^5.0.0",
-    "@vitest/coverage-v8": "^4.0.0",
-    "vitest": "^4.0.0"
+    "vitest": "^1.0.0"
+  },
+  "peerDependencies": {
+    "typescript": ">=4.5.0"
   },
   "engines": {
-    "node": ">=24.12.0",
-    "npm": ">=8.0.0"
+    "node": ">=25.2.1",
+    "yarn": "^1.22.22",
+    "npm": "^11.6.2"
   }
 }
